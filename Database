@@ -1,0 +1,57 @@
+#Database name - Library
+# 5 tables are used
+1. Account - For storing signup information of admin.
+   +----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| Username | varchar(25) | NO   | PRI | NULL    |       |
+| Name     | char(50)    | YES  |     | NULL    |       |
+| Password | varchar(20) | YES  |     | NULL    |       |
+| sec_q    | text        | YES  |     | NULL    |       |
+| Answer   | varchar(30) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+
+2. Book - For storing all registered books' information.
+   +-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Book_Id   | int(11)     | NO   | PRI | NULL    |       |
+| Name      | char(30)    | YES  |     | NULL    |       |
+| Edition   | varchar(10) | YES  |     | NULL    |       |
+| Publisher | varchar(30) | YES  |     | NULL    |       |
+| Price     | int(11)     | YES  |     | NULL    |       |
+| Pages     | int(11)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+
+3. Student - For storing all registered students' information.
+    +----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| Name           | char(30)    | YES  |     | NULL    |       |
+| Student_Number | int(11)     | NO   | PRI | NULL    |       |
+| course         | char(10)    | YES  |     | NULL    |       |
+| branch         | varchar(30) | YES  |     | NULL    |       |
+| Year           | int(11)     | YES  |     | NULL    |       |
+| Semester       | int(11)     | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+
+4. issue - For storing information of issued books.(book_id and student_number are foreign keys referenced to Book(Book_Id) and Student(Student_Number) respectively.
+    +----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| book_id        | int(11)     | NO   | PRI | NULL    |       |
+| student_number | int(11)     | YES  | MUL | NULL    |       |
+| date_of_issue  | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+
+5. Return_book - For storing information of returned books.
+   +----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| book_id        | int(11)     | YES  |     | NULL    |       |
+| student_number | int(11)     | YES  |     | NULL    |       |
+| date_of_issue  | varchar(20) | YES  |     | NULL    |       |
+| date_of_return | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+
+
