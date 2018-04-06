@@ -39,10 +39,10 @@ def switch_frame(top,frame_class):
     top.destroy()
     frame_class.vp_start_gui()
 
-def add(id,name,edition,publisher,price,pages):
+def add(id,name,edition,publisher,price,pages,count):
     try:
-        sql='insert into Book values(%s,%s,%s,%s,%s,%s)'
-        cur.execute(sql,(int(id.get()),str(name.get()),str(edition.get()),str(publisher.get()),int(price.get()),int(pages.get())))
+        sql='insert into Book values(%s,%s,%s,%s,%s,%s,%s,%s)'
+        cur.execute(sql,(int(id.get()),str(name.get()),str(edition.get()),str(publisher.get()),int(price.get()),int(pages.get()),int(count.get()),int(count.get())))
         conn.commit()
         messagebox.showinfo("Success", "New Book Added")
 
@@ -62,7 +62,7 @@ class Add_New_Book:
         font9 = "-family {DejaVu Sans} -size 15 -weight normal -slant "  \
             "roman -underline 0 -overstrike 0"
 
-        top.geometry("578x450+467+173")
+        top.geometry("578x450+467+220")
         top.title("Add New Book")
 
 
@@ -77,42 +77,47 @@ class Add_New_Book:
         self.Labelframe1.configure(width=480)
 
         self.Label1 = Label(self.Labelframe1)
-        self.Label1.place(relx=0.05, rely=0.15, height=19, width=66)
+        self.Label1.place(relx=0.05, rely=0.05, height=19, width=66)
         self.Label1.configure(font=font13)
         self.Label1.configure(text='''Book Id''')
         self.Label1.configure(width=66)
 
         self.Label2 = Label(self.Labelframe1)
-        self.Label2.place(relx=0.06, rely=0.28, height=19, width=66)
+        self.Label2.place(relx=0.06, rely=0.18, height=19, width=66)
         self.Label2.configure(font=font13)
         self.Label2.configure(text='''Name''')
         self.Label2.configure(width=66)
 
         self.Label3 = Label(self.Labelframe1)
-        self.Label3.place(relx=0.06, rely=0.41, height=19, width=66)
+        self.Label3.place(relx=0.06, rely=0.31, height=19, width=66)
         self.Label3.configure(font=font13)
         self.Label3.configure(text='''Edition''')
         self.Label3.configure(width=66)
 
         self.Label4 = Label(self.Labelframe1)
-        self.Label4.place(relx=0.06, rely=0.53, height=22, width=66)
+        self.Label4.place(relx=0.06, rely=0.43, height=22, width=66)
         self.Label4.configure(font=font13)
         self.Label4.configure(text='''Publisher''')
         self.Label4.configure(width=66)
 
         self.Label5 = Label(self.Labelframe1)
-        self.Label5.place(relx=0.06, rely=0.66, height=22, width=66)
+        self.Label5.place(relx=0.06, rely=0.56, height=22, width=66)
         self.Label5.configure(font=font13)
         self.Label5.configure(text='''Price''')
 
         self.Label6 = Label(self.Labelframe1)
-        self.Label6.place(relx=0.06, rely=0.78, height=22, width=66)
+        self.Label6.place(relx=0.06, rely=0.68, height=22, width=66)
         self.Label6.configure(font=font13)
         self.Label6.configure(text='''Pages''')
 
+        self.Label7 = Label(self.Labelframe1)
+        self.Label7.place(relx=0.06, rely=0.80, height=22, width=66)
+        self.Label7.configure(font=font13)
+        self.Label7.configure(text='''Count''')
+
         id=StringVar()
         self.Entry1 = Entry(self.Labelframe1,textvariable=id)
-        self.Entry1.place(relx=0.33, rely=0.15,height=21, relwidth=0.51)
+        self.Entry1.place(relx=0.33, rely=0.05,height=21, relwidth=0.51)
         self.Entry1.configure(background="white")
         self.Entry1.configure(font="TkFixedFont")
         self.Entry1.configure(width=246)
@@ -122,35 +127,41 @@ class Add_New_Book:
 
         name=StringVar()
         self.Entry2 = Entry(self.Labelframe1, textvariable=name)
-        self.Entry2.place(relx=0.33, rely=0.28,height=21, relwidth=0.51)
+        self.Entry2.place(relx=0.33, rely=0.18,height=21, relwidth=0.51)
         self.Entry2.configure(background="white")
         self.Entry2.configure(font="TkFixedFont")
 
         edition=StringVar()
         self.Entry3 = Entry(self.Labelframe1,textvariable=edition)
-        self.Entry3.place(relx=0.33, rely=0.41,height=21, relwidth=0.51)
+        self.Entry3.place(relx=0.33, rely=0.31,height=21, relwidth=0.51)
         self.Entry3.configure(background="white")
         self.Entry3.configure(font="TkFixedFont")
 
         publisher=StringVar()
         self.Entry4 = Entry(self.Labelframe1,textvariable=publisher)
-        self.Entry4.place(relx=0.33, rely=0.53,height=21, relwidth=0.51)
+        self.Entry4.place(relx=0.33, rely=0.43,height=21, relwidth=0.51)
         self.Entry4.configure(background="white")
         self.Entry4.configure(font="TkFixedFont")
 
         price=StringVar()
         self.Entry5 = Entry(self.Labelframe1,textvariable=price)
-        self.Entry5.place(relx=0.33, rely=0.66,height=21, relwidth=0.51)
+        self.Entry5.place(relx=0.33, rely=0.56,height=21, relwidth=0.51)
         self.Entry5.configure(background="white")
         self.Entry5.configure(font="TkFixedFont")
 
         pages=StringVar()
         self.Entry6 = Entry(self.Labelframe1,textvariable=pages)
-        self.Entry6.place(relx=0.33, rely=0.78,height=21, relwidth=0.51)
+        self.Entry6.place(relx=0.33, rely=0.68,height=21, relwidth=0.51)
         self.Entry6.configure(background="white")
         self.Entry6.configure(font="TkFixedFont")
 
-        self.Button1 = Button(self.Labelframe1,command=lambda:add(id,name,edition,publisher,price,pages))
+        count = StringVar()
+        self.Entry7 = Entry(self.Labelframe1, textvariable=count)
+        self.Entry7.place(relx=0.33, rely=0.80, height=21, relwidth=0.51)
+        self.Entry7.configure(background="white")
+        self.Entry7.configure(font="TkFixedFont")
+
+        self.Button1 = Button(self.Labelframe1,command=lambda:add(id,name,edition,publisher,price,pages,count))
         self.Button1.place(relx=0.19, rely=0.89, height=37, width=107)
         self.Button1.configure(activebackground="#d9d9d9")
         self.Button1.configure(background="#9ed9d9")
