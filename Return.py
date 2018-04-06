@@ -108,6 +108,13 @@ def return_book(id,dor):
         sql2="delete from issue where book_id=%s"
         cur.execute(sql2,(d1))
         conn.commit()
+        sql = "select Current_Stock from Book where Book_Id=%s "
+        cur.execute(sql, (int(id.get())))
+        data = cur.fetchall()
+        cs = data[0][0] + 1
+        sql = "update Book set Current_Stock=%s where Book_Id=%s"
+        cur.execute(sql, (cs, int(id.get())))
+        conn.commit()
         messagebox.showinfo("Success", "Book Successfully Reurned")
     except Exception as e:
         messagebox.showinfo("Error", e)
