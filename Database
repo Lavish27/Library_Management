@@ -12,16 +12,19 @@
 +----------+-------------+------+-----+---------+-------+
 
 2. Book - For storing all registered books' information.
-   +-----------+-------------+------+-----+---------+-------+
-| Field     | Type        | Null | Key | Default | Extra |
-+-----------+-------------+------+-----+---------+-------+
-| Book_Id   | int(11)     | NO   | PRI | NULL    |       |
-| Name      | char(30)    | YES  |     | NULL    |       |
-| Edition   | varchar(10) | YES  |     | NULL    |       |
-| Publisher | varchar(30) | YES  |     | NULL    |       |
-| Price     | int(11)     | YES  |     | NULL    |       |
-| Pages     | int(11)     | YES  |     | NULL    |       |
-+-----------+-------------+------+-----+---------+-------+
+ +---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| Book_Id       | int(11)     | NO   | PRI | NULL    |       |
+| Name          | char(30)    | YES  |     | NULL    |       |
+| Edition       | varchar(10) | YES  |     | NULL    |       |
+| Publisher     | varchar(30) | YES  |     | NULL    |       |
+| Price         | int(11)     | YES  |     | NULL    |       |
+| Pages         | int(11)     | YES  |     | NULL    |       |
+| total_stock   | int(11)     | YES  |     | NULL    |       |
+| current_stock | int(11)     | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+
 
 3. Student - For storing all registered students' information.
     +----------------+-------------+------+-----+---------+-------+
@@ -36,12 +39,12 @@
 +----------------+-------------+------+-----+---------+-------+
 
 4. issue - For storing information of issued books.(book_id and student_number are foreign keys referenced to Book(Book_Id) and Student(Student_Number) respectively.
-    +----------------+-------------+------+-----+---------+-------+
++----------------+-------------+------+-----+---------+-------+
 | Field          | Type        | Null | Key | Default | Extra |
 +----------------+-------------+------+-----+---------+-------+
-| book_id        | int(11)     | NO   | PRI | NULL    |       |
-| student_number | int(11)     | YES  | MUL | NULL    |       |
-| date_of_issue  | varchar(20) | YES  |     | NULL    |       |
+| book_id        | int(11)     | NO   | PRI | 0       |       |
+| student_number | int(11)     | NO   | PRI | 0       |       |
+| date_of_issue  | varchar(20) | NO   |     | NULL    |       |
 +----------------+-------------+------+-----+---------+-------+
 
 5. Return_book - For storing information of returned books.
