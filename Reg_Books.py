@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+   #! /usr/bin/env python
 import sys
 
 try:
@@ -48,7 +48,7 @@ class Registered_Books:
         _ana1color = '#d9d9d9' # X11 color: 'gray85'
         _ana2color = '#d9d9d9' # X11 color: 'gray85'
 
-        top.geometry("826x450+354+180")
+        top.geometry("1160x450+154+180")
         top.title("Registered Books")
 
 
@@ -72,13 +72,13 @@ class Registered_Books:
 
         conn = connect.connect()
         cur = conn.cursor()
-        sql="select * from Book"
+        sql="select Book_Id,Name,Edition,Publisher,Total_Stock,Current_Stock from Book"
         cur.execute(sql)
         data=cur.fetchall()
         height = len(data)+1
-        width = 5
+        width = 7
         self.t=Entry(top)
-        head=["Book_Id","Name","Edition","Publisher"]
+        head=["Book_Id","Name","Edition","Publisher","Total_Stock","Current_Stock"]
 
         for i in range(height):  # Rows
             for j in range(width):  # Columns
