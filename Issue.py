@@ -43,9 +43,9 @@ def destroy_Issue_Book():
     w.destroy()
     w = None
 
-def book(id,e2,e3,e4,e5,e6):
+def book(id,e2,e3,e4,e5,e6,e7):
     try:
-        sql="select * from Book where Book_Id=%s"
+        sql="select Book_Id,Name,Edition,Publisher,Price,Pages,Current_Stock from Book where Book_Id=%s"
         cur.execute(sql,(int(id.get())))
         data=cur.fetchall()
         if data:
@@ -64,6 +64,11 @@ def book(id,e2,e3,e4,e5,e6):
             e6.configure(state="normal")
             e6.insert(len(str(data[0][5])), data[0][5])
             e6.configure(state="readonly")
+            e7.configure(state="normal")
+            e7.insert(len(str(data[0][6])), data[0][6])
+            e7.configure(state="readonly")
+            if data[0][6]==0:
+                messagebox.showinfo("Not Available", "Book not in current stock")
         else:
             messagebox.showinfo("Try Again", "Book not Registered")
     except Exception as e:
@@ -100,13 +105,20 @@ def issue(id,number,date):
         sql="insert into issue values(%s,%s,%s)"
         cur.execute(sql,(int(id.get()),int(number.get()),str(date.get())))
         conn.commit()
+
+        sql = "select Current_Stock from Book where Book_Id=%s "
+        cur.execute(sql,(int(id.get())))
+        data=cur.fetchall()
+        cs=data[0][0]-1
+        sql="update Book set Current_Stock=%s where Book_Id=%s"
+        cur.execute(sql,(cs,int(id.get())))
+        conn.commit()
         messagebox.showinfo("Success", "Book Issued")
 
     except pymysql.IntegrityError as e:
         messagebox.showinfo("Try Again", "Book Already Issued")
     except Exception as e:
         messagebox.showinfo("Error", e)
-
 
 
 class Issue_Book:
@@ -130,7 +142,7 @@ class Issue_Book:
 
 
         self.Labelframe1 = LabelFrame(top)
-        self.Labelframe1.place(relx=0.02, rely=0.06, relheight=0.68
+        self.Labelframe1.place(relx=0.02, rely=0.06, relheight=0.75
                 , relwidth=0.48)
         self.Labelframe1.configure(relief=GROOVE)
         self.Labelframe1.configure(font=font10)
@@ -139,52 +151,59 @@ class Issue_Book:
         self.Labelframe1.configure(width=510)
 
         self.Label1 = Label(self.Labelframe1)
-        self.Label1.place(relx=0.05, rely=0.17, height=19, width=66)
+        self.Label1.place(relx=0.05, rely=0.15, height=19, width=66)
         self.Label1.configure(activebackground="#f9f9f9")
         self.Label1.configure(font=font9)
         self.Label1.configure(text='''Book Id''')
 
         self.Label2 = Label(self.Labelframe1)
-        self.Label2.place(relx=0.06, rely=0.31, height=19, width=66)
+        self.Label2.place(relx=0.06, rely=0.27, height=19, width=66)
         self.Label2.configure(activebackground="#f9f9f9")
         self.Label2.configure(font=font9)
         self.Label2.configure(text='''Name''')
         self.Label2.configure(width=126)
 
         self.Label3 = Label(self.Labelframe1)
-        self.Label3.place(relx=0.06, rely=0.45, height=19, width=66)
+        self.Label3.place(relx=0.06, rely=0.40, height=19, width=66)
         self.Label3.configure(activebackground="#f9f9f9")
         self.Label3.configure(font=font9)
         self.Label3.configure(text='''Edition''')
 
         self.Label4 = Label(self.Labelframe1)
-        self.Label4.place(relx=0.06, rely=0.59, height=22, width=66)
+        self.Label4.place(relx=0.06, rely=0.52, height=22, width=66)
         self.Label4.configure(activebackground="#f9f9f9")
         self.Label4.configure(font=font9)
         self.Label4.configure(text='''Publisher''')
 
         self.Label5 = Label(self.Labelframe1)
-        self.Label5.place(relx=0.06, rely=0.73, height=22, width=66)
+        self.Label5.place(relx=0.06, rely=0.66, height=22, width=66)
         self.Label5.configure(activebackground="#f9f9f9")
         self.Label5.configure(font=font9)
         self.Label5.configure(text='''Price''')
 
         self.Label6 = Label(self.Labelframe1)
-        self.Label6.place(relx=0.06, rely=0.87, height=22, width=66)
+        self.Label6.place(relx=0.06, rely=0.80, height=22, width=66)
         self.Label6.configure(activebackground="#f9f9f9")
         self.Label6.configure(font=font9)
         self.Label6.configure(text='''Pages''')
         self.Label6.configure(width=76)
 
+        self.Label7 = Label(self.Labelframe1)
+        self.Label7.place(relx=0.06, rely=0.91, height=22, width=102)
+        self.Label7.configure(activebackground="#f9f9f9")
+        self.Label7.configure(font=font9)
+        self.Label7.configure(text='''Current_Stock''')
+        self.Label7.configure(width=76)
+
         id=StringVar()
         self.Entry1 = Entry(self.Labelframe1,textvariable=id)
-        self.Entry1.place(relx=0.31, rely=0.17,height=21, relwidth=0.48)
+        self.Entry1.place(relx=0.31, rely=0.15,height=21, relwidth=0.48)
         self.Entry1.configure(background="white")
         self.Entry1.configure(font="TkFixedFont")
         self.Entry1.configure(selectbackground="#c4c4c4")
 
         self.Entry2 = Entry(self.Labelframe1)
-        self.Entry2.place(relx=0.31, rely=0.31,height=21, relwidth=0.48)
+        self.Entry2.place(relx=0.31, rely=0.27,height=21, relwidth=0.48)
         self.Entry2.configure(background="white")
         self.Entry2.configure(font="TkFixedFont")
         self.Entry2.configure(selectbackground="#c4c4c4")
@@ -192,7 +211,7 @@ class Issue_Book:
         self.Entry2.configure(state=READONLY)
 
         self.Entry3 = Entry(self.Labelframe1)
-        self.Entry3.place(relx=0.31, rely=0.45,height=21, relwidth=0.48)
+        self.Entry3.place(relx=0.31, rely=0.40,height=21, relwidth=0.48)
         self.Entry3.configure(background="white")
         self.Entry3.configure(font="TkFixedFont")
         self.Entry3.configure(selectbackground="#c4c4c4")
@@ -200,7 +219,7 @@ class Issue_Book:
         self.Entry3.configure(state=READONLY)
 
         self.Entry4 = Entry(self.Labelframe1)
-        self.Entry4.place(relx=0.31, rely=0.59,height=21, relwidth=0.48)
+        self.Entry4.place(relx=0.31, rely=0.52,height=21, relwidth=0.48)
         self.Entry4.configure(background="white")
         self.Entry4.configure(font="TkFixedFont")
         self.Entry4.configure(selectbackground="#c4c4c4")
@@ -208,7 +227,7 @@ class Issue_Book:
         self.Entry4.configure(state=READONLY)
 
         self.Entry5 = Entry(self.Labelframe1)
-        self.Entry5.place(relx=0.31, rely=0.73,height=21, relwidth=0.48)
+        self.Entry5.place(relx=0.31, rely=0.66,height=21, relwidth=0.48)
         self.Entry5.configure(background="white")
         self.Entry5.configure(font="TkFixedFont")
         self.Entry5.configure(selectbackground="#c4c4c4")
@@ -216,15 +235,23 @@ class Issue_Book:
         self.Entry5.configure(state=READONLY)
 
         self.Entry6 = Entry(self.Labelframe1)
-        self.Entry6.place(relx=0.31, rely=0.87,height=21, relwidth=0.48)
+        self.Entry6.place(relx=0.31, rely=0.80,height=21, relwidth=0.48)
         self.Entry6.configure(background="white")
         self.Entry6.configure(font="TkFixedFont")
         self.Entry6.configure(selectbackground="#c4c4c4")
         READONLY = 'readonly'
         self.Entry6.configure(state=READONLY)
 
-        self.Button1 = Button(self.Labelframe1,command=lambda:book(id,self.Entry2,self.Entry3,self.Entry4,self.Entry5,self.Entry6))
-        self.Button1.place(relx=0.82, rely=0.17, height=27, width=77)
+        self.Entry71 = Entry(self.Labelframe1)
+        self.Entry71.place(relx=0.31, rely=0.91, height=21, relwidth=0.48)
+        self.Entry71.configure(background="white")
+        self.Entry71.configure(font="TkFixedFont")
+        self.Entry71.configure(selectbackground="#c4c4c4")
+        READONLY = 'readonly'
+        self.Entry71.configure(state=READONLY)
+
+        self.Button1 = Button(self.Labelframe1,command=lambda:book(id,self.Entry2,self.Entry3,self.Entry4,self.Entry5,self.Entry6,self.Entry71))
+        self.Button1.place(relx=0.82, rely=0.15, height=27, width=77)
         self.Button1.configure(activebackground="#d9d9d9")
         self.Button1.configure(background="#aed9d9")
         self.Button1.configure(borderwidth="3")
@@ -316,7 +343,7 @@ class Issue_Book:
         self.Entry12.configure(state=READONLY)
 
         self.Button2 = Button(self.Labelframe2,command=lambda:student(number,self.Entry8,self.Entry9,self.Entry10,self.Entry11,self.Entry12))
-        self.Button2.place(relx=0.84, rely=0.17, height=31, width=72)
+        self.Button2.place(relx=0.84, rely=0.15, height=31, width=72)
         self.Button2.configure(activebackground="#d9d9d9")
         self.Button2.configure(background="#aed9d9")
         self.Button2.configure(borderwidth="3")
